@@ -1,16 +1,8 @@
 from scd.models import *
 from rest_framework import viewsets, permissions
 from .serializers import *
-from .models import Contacto_emergencia, Credencial, Alumno, Docente, Administrativo, Otros
+from .models import  Alumno, Docente, Administrativo, Otros
 
-
-class ContactoEmergenciaViewSet(viewsets.ModelViewSet):
-    queryset = Contacto_emergencia.objects.all()
-    serializer_class = Contacto_emergenciaSerializer
-
-class CredencialViewSet(viewsets.ModelViewSet):
-    queryset = Credencial.objects.all()
-    serializer_class = CredencialSerializer
 
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumno.objects.all()
@@ -29,6 +21,6 @@ class OtrosViewSet(viewsets.ModelViewSet):
     serializer_class = OtrosSerializer
 
 class CarreraViewSet(viewsets.ModelViewSet):
-    queryset = Carrera.objects.all()
-    serializer_class = CarreraSerializer
+    queryset = Carreras.objects.all()
+    serializer_class = CarrerasSerializer
     

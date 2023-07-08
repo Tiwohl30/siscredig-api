@@ -3,9 +3,6 @@ from .api import *
 
 router = routers.DefaultRouter()
 
-router.register('api/contactos', ContactoEmergenciaViewSet, 'contactoEmergencia')
-
-router.register('api/credenciales', CredencialViewSet, 'credenciales')
 
 router.register('api/alumnos', AlumnoViewSet, 'alumnos')
 

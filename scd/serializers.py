@@ -1,17 +1,6 @@
 from rest_framework import serializers
-from .models import Contacto_emergencia, Carrera, Credencial, Alumno, Docente, Administrativo, Otros
+from .models import  Carreras, Alumno, Docente, Administrativo, Otros
 
-class Contacto_emergenciaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-
-        model = Contacto_emergencia
-        fields = '__all__'
-
-class CredencialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Credencial
-        fields = '__all__'
 
 class AlumnoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +22,7 @@ class OtrosSerializer(serializers.ModelSerializer):
         model = Otros
         fields = '__all__'
 
-class CarreraSerializer(serializers.ModelSerializer):
+class CarrerasSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Carrera
+        model = Carreras
         fields = '__all__'
