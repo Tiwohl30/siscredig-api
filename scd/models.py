@@ -55,6 +55,7 @@ class Alumno(models.Model):
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
     password = models.CharField(max_length=128, default=f"{matricula}")
+    credencial_activa = models.BooleanField(default=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -81,6 +82,7 @@ class Docente(models.Model):
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
     password = models.CharField(max_length=128, default=f"{numero_control}")
+    credencial_activa = models.BooleanField(default=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -109,6 +111,7 @@ class Administrativo(models.Model):
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
     password = models.CharField(max_length=128, default="nimda")
+    credencial_activa = models.BooleanField(default=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -135,6 +138,7 @@ class Otros(models.Model):
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
     password = models.CharField(max_length=128, default=f"{numero_control}")
+    credencial_activa = models.BooleanField(default=True)
 
 
     def set_password(self, raw_password):
