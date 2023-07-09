@@ -44,7 +44,6 @@ class Alumno(models.Model):
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
     tipo_sangre = models.CharField(max_length=5)
-    correo = models.EmailField(default=f"{matricula}@uptapachula.edu.mx")
     cuatrimestre = models.IntegerField(choices=opciones_cuatrimestre)
     fotografia = models.ImageField(null=True, upload_to='fotografias_alumnos/')
     telefono = models.CharField(max_length=13)
@@ -54,14 +53,17 @@ class Alumno(models.Model):
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=128, default=f"{matricula}")
+    password = models.CharField(max_length=128)
     credencial_activa = models.BooleanField(default=True)
+    email = models.EmailField(default='')
+    
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
+    
 
 
 
@@ -73,7 +75,7 @@ class Docente(models.Model):
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
     tipo_sangre = models.CharField(max_length=5)
-    correo = models.EmailField()
+    email = models.EmailField()
     fotografia = models.ImageField(null=True, upload_to='fotografias_docentes/')
     telefono = models.CharField(max_length=13)
     nombre_contactoe = models.CharField(max_length=20, default="")
@@ -100,7 +102,7 @@ class Administrativo(models.Model):
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
     tipo_sangre = models.CharField(max_length=5)
-    correo = models.EmailField()
+    email = models.EmailField()
     fotografia = models.ImageField(null=True, upload_to='fotografias_administrativos/')
     telefono = models.CharField(max_length=13)
     cargo = models.CharField(max_length=20)
@@ -130,7 +132,7 @@ class Otros(models.Model):
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
     tipo_sangre = models.CharField(max_length=5)
-    correo = models.EmailField()
+    email = models.EmailField()
     fotografia = models.ImageField(null=True, upload_to='fotografias_otros/')
     nombre_contactoe = models.CharField(max_length=20, default="")
     apellido_paterno_contactoe = models.CharField(max_length=20, default="")

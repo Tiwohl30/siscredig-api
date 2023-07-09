@@ -1,36 +1,32 @@
 from rest_framework import routers
-from .api import *
 from django.urls import path, include
-from .views import LoginView, RegisterView
+from .views import *
+
+
 from . import views
 
 # Definir el enrutador existente
 router = routers.DefaultRouter()
-# Agregar más rutas para otros modelos si es necesario
 
 
+router.register(r'alumnos', AlumnoViewSet, 'alumnos')
 
-router.register('api/alumnos', AlumnoViewSet, 'alumnos')
+router.register(r'docentes', DocenteViewSet, 'docentes')
 
-router.register('api/docentes', DocenteViewSet, 'docentes')
+router.register(r'administrativos', AdministrativoViewSet, 'administrativos')
 
-router.register('api/administrativos', AdministrativoViewSet, 'administrativos')
+router.register(r'otros', OtrosViewSet, 'otros')
 
-router.register('api/otros', OtrosViewSet, 'otros')
-
-router.register('api/carrera', CarreraViewSet, 'carrera')
+router.register(r'carrera', CarreraViewSet, 'carrera')
 
 
 urlpatterns = [
-    # URLs del enrutador existente
-    path('api/', include(router.urls)),
-    
-    # URL para el inicio de sesión
-    path('api/login/', LoginView.as_view(), name='login'),
-    
-    # URL para el registro
-    path('api/register/', RegisterView.as_view(), name='register'),
-    
-    # Otras URLs adicionales si es necesario
+
+path('api/', include(router.urls)),
+path('api/alumno/login/', views.AlumnoLoginView.as_view(), name='alumno_login'),
+path('api/docente/login/', views.DocenteLoginView.as_view(), name='docente_login'),
+path('api/administrativo/login/', views.AdministrativoLoginView.as_view(), name='administrativo_login'),
+
+
 ]
 

@@ -5,16 +5,10 @@ from .models import  Carreras, Alumno, Docente, Administrativo, Otros
 
 
 class AlumnoSerializer(serializers.ModelSerializer):
-    
-    password = serializers.CharField(write_only=True)
-
-    def create(self, validated_data):
-        user = Alumno.objects.create_user(user_type='Alumno', **validated_data)
-        return user
 
     class Meta:
         model = Alumno
-        fields = ['username', 'password']
+        fields = '__all__'
 
 
 class DocenteSerializer(serializers.ModelSerializer):
@@ -25,15 +19,9 @@ class DocenteSerializer(serializers.ModelSerializer):
 
 class AdministrativoSerializer(serializers.ModelSerializer):
 
-    password = serializers.CharField(write_only=True)
-
-    def create(self, validated_data):
-        user = Administrativo.objects.create_user(correo=validated_data['correo'], password=validated_data['password'])
-        return user
-
     class Meta:
         model = Administrativo
-        fields = ['correo', 'password']
+        fields = '__all__'
 
 class OtrosSerializer(serializers.ModelSerializer):
     class Meta:
