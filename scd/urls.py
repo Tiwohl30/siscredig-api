@@ -23,10 +23,6 @@ router.register(r'carrera', CarreraViewSet, 'carrera')
 urlpatterns = [
 
 path('api/', include(router.urls)),
-path('api/alumno/login/', views.AlumnoLoginView.as_view(), name='alumno_login'),
-path('api/docente/login/', views.DocenteLoginView.as_view(), name='docente_login'),
-path('api/administrativo/login/', views.AdministrativoLoginView.as_view(), name='administrativo_login'),
-
-
+path('api/login/', login_view, name='login'),
 ]
 

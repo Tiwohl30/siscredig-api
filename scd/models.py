@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
 
 opciones_cuatrimestre = [
     (1, 'primer cuatrimestre'),
@@ -30,10 +31,30 @@ parentescos = [
 ]
 
 
+class AlumnoManager(BaseUserManager):
+    def create_user(self, matricula, password=None, **extra_fields):
+        # Crea un usuario con la matrícula y contraseña proporcionadas
+        if not matricula:
+            raise ValueError("La matrícula debe ser especificada.")
+        
+        alumno = self.model(matricula=matricula, **extra_fields)
+        alumno.set_password(password)
+        alumno.save(using=self._db)
+        return alumno
+
+    def create_superuser(self, matricula, password=None, **extra_fields):
+        # Crea un superusuario con la matrícula y contraseña proporcionadas
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        
+        return self.create_user(matricula, password, **extra_fields)
+
 class Carreras(models.Model):
 
     idCarrera = models.IntegerField(primary_key=True)
     nombre_carrera = models.CharField(choices=opciones_carreras, max_length=50, null=False)
+
+
 
 
 class Alumno(models.Model):
@@ -53,22 +74,25 @@ class Alumno(models.Model):
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=128)
     credencial_activa = models.BooleanField(default=True)
     email = models.EmailField(default='')
-    
 
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-    
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
-    
 
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    USERNAME_FIELD = 'matricula'
+
+    objects = AlumnoManager()
+
+    def __str__(self):
+        return self.email
+     
 
 
 class Docente(models.Model):
 
+    
     numero_control = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=20)
     apellido_paterno = models.CharField(max_length=15)
@@ -83,18 +107,15 @@ class Docente(models.Model):
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=128, default=f"{numero_control}")
     credencial_activa = models.BooleanField(default=True)
 
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-    
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
 
+    def __str__(self):
+        return self.email
 
 
 class Administrativo(models.Model):
+
 
     numero_control = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=20)
@@ -112,14 +133,12 @@ class Administrativo(models.Model):
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=128, default="nimda")
     credencial_activa = models.BooleanField(default=True)
 
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-    
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
+
+
+    def __str__(self):
+        return self.email
 
 
 
@@ -139,19 +158,12 @@ class Otros(models.Model):
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
     telefono_contactoe = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=128, default=f"{numero_control}")
     credencial_activa = models.BooleanField(default=True)
 
-
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-    
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
-
     
 
-
+    def __str__(self):
+        return self.email
 
 
 

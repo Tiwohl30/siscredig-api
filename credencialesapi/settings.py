@@ -30,6 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 # Application definition
 
 CORS_ORIGIN_WHITELIST = (
