@@ -1,16 +1,28 @@
 from scd.models import *
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from .serializers import *
-from django.contrib.auth import authenticate, login, logout
 from .models import  Alumno, Docente, Administrativo, Otros
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import make_password
+from rest_framework.response import Response
+from rest_framework import status
 from django.contrib.auth.hashers import check_password
+
+
+
+import logging
 
 
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumno.objects.all()
     serializer_class = AlumnoSerializer
+
+    def perform_create(self, serializer):
+        password = self.request.data.get('password')  # Obtener la contraseña del request
+        if password:
+            # Establecer la contraseña utilizando el método set_password
+            serializer.validated_data['password'] = make_password(password)
+        serializer.save()
 
 class DocenteViewSet(viewsets.ModelViewSet):
     queryset = Docente.objects.all()
@@ -29,19 +41,21 @@ class CarreraViewSet(viewsets.ModelViewSet):
     serializer_class = CarrerasSerializer
 
 # Vistas para logins
+logger = logging.getLogger(__name__)
 
-        
-@csrf_exempt
-def login_view(request):
+class LoginView(APIView):
+    
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
 
-    if request.method == 'POST':
-            matricula = request.POST.get('matricula')
-            password = request.POST.get('password')
-
-            alumno = Alumno.objects.get(matricula=123456)
-            #alumno = authenticate(request, matricula=matricula, password=password)
+        try:
+            alumno = Alumno.objects.get(email=email)
             if check_password(password, alumno.password):
-                login(request, alumno)
-                return JsonResponse({'message': 'Inicio de sesión exitoso.'})
-            else:
-                return JsonResponse({'error': 'Credenciales inválidas.'}, status=401)
+                # Credenciales válidas
+                return Response({'message': 'Autenticación exitosa'})
+        except Alumno.DoesNotExist:
+            pass
+
+        # Credenciales inválidas
+        return Response({'message': 'Error de autenticación'}, status=401)

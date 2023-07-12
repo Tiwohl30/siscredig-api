@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+import argon2
 
 opciones_cuatrimestre = [
     (1, 'primer cuatrimestre'),
@@ -31,23 +30,6 @@ parentescos = [
 ]
 
 
-class AlumnoManager(BaseUserManager):
-    def create_user(self, matricula, password=None, **extra_fields):
-        # Crea un usuario con la matrícula y contraseña proporcionadas
-        if not matricula:
-            raise ValueError("La matrícula debe ser especificada.")
-        
-        alumno = self.model(matricula=matricula, **extra_fields)
-        alumno.set_password(password)
-        alumno.save(using=self._db)
-        return alumno
-
-    def create_superuser(self, matricula, password=None, **extra_fields):
-        # Crea un superusuario con la matrícula y contraseña proporcionadas
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        
-        return self.create_user(matricula, password, **extra_fields)
 
 class Carreras(models.Model):
 
@@ -76,18 +58,20 @@ class Alumno(models.Model):
     telefono_contactoe = models.CharField(max_length=10, default="")
     credencial_activa = models.BooleanField(default=True)
     email = models.EmailField(default='')
-
-
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
-    USERNAME_FIELD = 'matricula'
-
-    objects = AlumnoManager()
-
-    def __str__(self):
-        return self.email
+    password = models.CharField(max_length=128, default=" ")
+    
      
+    def set_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        self.password = hasher.hash(raw_password)
+
+    def check_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        try:
+            hasher.verify(self.password, raw_password)
+            return True
+        except argon2.exceptions.VerifyMismatchError:
+            return False
 
 
 class Docente(models.Model):
@@ -109,9 +93,6 @@ class Docente(models.Model):
     telefono_contactoe = models.CharField(max_length=10, default="")
     credencial_activa = models.BooleanField(default=True)
 
-
-    def __str__(self):
-        return self.email
 
 
 class Administrativo(models.Model):
@@ -137,10 +118,6 @@ class Administrativo(models.Model):
 
 
 
-    def __str__(self):
-        return self.email
-
-
 
 
 class Otros(models.Model):
@@ -162,8 +139,4 @@ class Otros(models.Model):
 
     
 
-    def __str__(self):
-        return self.email
-
-
-
+ 

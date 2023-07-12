@@ -23,6 +23,6 @@ router.register(r'carrera', CarreraViewSet, 'carrera')
 urlpatterns = [
 
 path('api/', include(router.urls)),
-path('api/login/', login_view, name='login'),
+path('login/', LoginView.as_view(), name='login'),
 ]
 

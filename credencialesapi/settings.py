@@ -30,9 +30,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
 # Application definition
 
 CORS_ORIGIN_WHITELIST = (
@@ -79,9 +76,23 @@ MIDDLEWARE = [
     
 ]
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 
 ROOT_URLCONF = 'credencialesapi.urls'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 TEMPLATES = [
     {
