@@ -46,11 +46,11 @@ logger = logging.getLogger(__name__)
 class LoginView(APIView):
     
     def post(self, request):
-        email = request.data.get('email')
+        matricula = request.data.get('matricula')
         password = request.data.get('password')
 
         try:
-            alumno = Alumno.objects.get(email=email)
+            alumno = Alumno.objects.get(matricula=matricula)
             if check_password(password, alumno.password):
                 # Credenciales válidas
                 return Response({'message': 'Autenticación exitosa'})
