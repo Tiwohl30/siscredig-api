@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,6 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-yix!plulmg1si=d4_q)ummtv*n!vdu+k+2n$$6_8aijb#2^_y('
+
+EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
+
+SENDGRID_API_KEY = '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'
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = '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' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = "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"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SENDGRID_SANDBOX_MODE_IN_DEBUG=False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'sendgrid',
     'scd',
 ]
 

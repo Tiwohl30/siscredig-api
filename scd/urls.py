@@ -23,6 +23,10 @@ router.register(r'carrera', CarreraViewSet, 'carrera')
 urlpatterns = [
 
 path('api/', include(router.urls)),
-path('login/', LoginView.as_view(), name='login'),
+path('login/', AlumnoLoginView.as_view(), name='login'),
+path('loginD/', DocenteLoginView.as_view(), name='login'),
+path('loginO/', OtrosLoginView.as_view(), name='login'),
+path('loginA/', AdminLoginView.as_view(), name='login'),
+path('send-email/', send_email.as_view(), name='send-email'),
 ]
 
