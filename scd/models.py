@@ -45,6 +45,7 @@ class Alumno(models.Model):
     nombre = models.CharField(max_length=20)
     apellido_paterno = models.CharField(max_length=15)
     apellido_materno = models.CharField(max_length=15)
+    nss = models.CharField(max_length=25, default=" ")
     direccion = models.CharField(max_length=150)
     tipo_sangre = models.CharField(max_length=5)
     cuatrimestre = models.IntegerField(choices=opciones_cuatrimestre)
@@ -79,6 +80,7 @@ class Docente(models.Model):
     
     numero_control = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=20)
+    nss = models.CharField(max_length=25, default=" ")
     apellido_paterno = models.CharField(max_length=15)
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
@@ -94,6 +96,21 @@ class Docente(models.Model):
     credencial_activa = models.BooleanField(default=True)
 
 
+    password = models.CharField(max_length=128, default=" ")
+    
+     
+    def set_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        self.password = hasher.hash(raw_password)
+
+    def check_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        try:
+            hasher.verify(self.password, raw_password)
+            return True
+        except argon2.exceptions.VerifyMismatchError:
+            return False
+
 
 class Administrativo(models.Model):
 
@@ -103,26 +120,29 @@ class Administrativo(models.Model):
     apellido_paterno = models.CharField(max_length=15)
     apellido_materno = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
-    tipo_sangre = models.CharField(max_length=5)
     email = models.EmailField()
-    fotografia = models.ImageField(null=True, upload_to='fotografias_administrativos/')
     telefono = models.CharField(max_length=13)
-    cargo = models.CharField(max_length=20)
-    area = models.CharField(max_length=30)
-    nombre_contactoe = models.CharField(max_length=20, default="")
-    apellido_paterno_contactoe = models.CharField(max_length=20, default="")
-    apellido_materno_contactoe = models.CharField(max_length=20, default="")
-    parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
-    telefono_contactoe = models.CharField(max_length=10, default="")
-    credencial_activa = models.BooleanField(default=True)
 
+    password = models.CharField(max_length=128, default=" ")
+    
+     
+    def set_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        self.password = hasher.hash(raw_password)
 
-
+    def check_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        try:
+            hasher.verify(self.password, raw_password)
+            return True
+        except argon2.exceptions.VerifyMismatchError:
+            return False
 
 
 class Otros(models.Model):
 
     numero_control = models.IntegerField(primary_key=True)
+    nss = models.CharField(max_length=25, default=" ")
     nombre = models.CharField(max_length=20)
     apellido_paterno = models.CharField(max_length=15)
     apellido_materno = models.CharField(max_length=15)
@@ -134,9 +154,25 @@ class Otros(models.Model):
     apellido_paterno_contactoe = models.CharField(max_length=20, default="")
     apellido_materno_contactoe = models.CharField(max_length=20, default="")
     parentescto_contactoe = models.CharField(max_length=15, choices=parentescos, default="")
+    cargo = models.CharField(max_length=30, default=" ")
+    area = models.CharField(max_length=50, default=" ")
     telefono_contactoe = models.CharField(max_length=10, default="")
     credencial_activa = models.BooleanField(default=True)
 
+    password = models.CharField(max_length=128, default=" ")
+    
+     
+    def set_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        self.password = hasher.hash(raw_password)
+
+    def check_password(self, raw_password):
+        hasher = argon2.PasswordHasher()
+        try:
+            hasher.verify(self.password, raw_password)
+            return True
+        except argon2.exceptions.VerifyMismatchError:
+            return False
     
 
  
